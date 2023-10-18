@@ -1,58 +1,52 @@
-var stopwatch = document.getElementById("stopwatch");
-var startBtn = document.getElementById("start-btn");
-var timeoutId = null;
-var ms = 0;
-var sec = 0;
-var min = 0;
- 
+document.addEventListener("DOMContentLoaded", function() {
+    const taskInput = document.getElementById("taskInput");
+    const addTaskButton = document.getElementById("addTask");
+    const taskList = document.getElementById("taskList");
+    const deleteAllButton = document.getElementById("deleteAll");
 
-function start(flag) {
-    if (flag) {
-        startBtn.disabled = true;
+    // Add a task
+    function addTask(taskText) {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `
+            <span>${taskText}</span>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+        `;
+        taskList.appendChild(listItem);
+        taskInput.value = "";
+
+        listItem.querySelector(".delete").addEventListener("click", function() {
+            taskList.removeChild(listItem);
+        });
+
+        listItem.querySelector(".edit").addEventListener("click", function() {
+            const newText = prompt("Edit task:", taskText);
+            if (newText !== null && newText.trim() !== "") {
+                taskText = newText.trim();
+                listItem.querySelector("span").textContent = taskText;
+            }
+        });
+
+        listItem.addEventListener("click", function() {
+            listItem.classList.toggle("completed");
+        });
     }
- 
-    timeoutId = setTimeout(function() {
-        ms = parseInt(ms);
-        sec = parseInt(sec);
-        min = parseInt(min);
- 
-        ms++;
- 
-        if (ms == 100) {
-            sec = sec + 1;
-            ms = 0;
+
+    addTaskButton.addEventListener("click", function() {
+        const taskText = taskInput.value.trim();
+        if (taskText !== "") {
+            addTask(taskText);
         }
-        if (sec == 60) {
-            min = min + 1;
-            sec = 0;
+    });
+
+    taskInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            addTaskButton.click();
         }
-        if (ms < 10) {
-            ms = '0' + ms;
-        }
-        if (sec < 10) {
-            sec = '0' + sec;
-        }
-        if (min < 10) {
-            min = '0' + min;
-        }
- 
-        stopwatch.innerHTML = min + ':' + sec + ':' + ms;
- 
-        
-        start();
- 
-    }, 10); 
-}
-function pause() {
-    clearTimeout(timeoutId);
-    startBtn.disabled = false;
-}
- 
-function reset() {
-    ms = 0;
-    sec = 0;
-    min = 0;
-    clearTimeout(timeoutId);
-    stopwatch.innerHTML = '00:00:00';
-    startBtn.disabled = false;
-}
+    });
+
+    deleteAllButton.addEventListener("click", function() {
+        const listItems = taskList.querySelectorAll("li");
+        listItems.forEach(item => taskList.removeChild(item));
+    });
+});

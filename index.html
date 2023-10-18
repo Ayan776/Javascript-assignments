@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
     <link rel="stylesheet" href="style.css">
-<title>JavaScript StopWatch</title>
 </head>
 <body>
-    <div id="stopwatch-container">
-        <h1>Stopwatch using JavaScript</h1>
-        <div id="stopwatch">00:00:00</div>
-        <button onclick="start(true)" id="start-btn">Start</button>
-        <button onclick="pause()">Pause</button>
-        <button onclick="reset()">Reset</button>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button id="addTask">Add</button>
+        <button id="deleteAll">Delete All</button>
+        <ul id="taskList"></ul>
     </div>
     <script src="app.js"></script>
 </body>
